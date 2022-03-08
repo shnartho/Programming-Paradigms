@@ -1,0 +1,123 @@
+//task 1
+
+def SieveofEratosthenes(n: Int): List[Int] = {
+  def findPrimes(sieve: List[Int]): List[Int] = sieve match {
+    case h :: t => h :: findPrimes(t filter (x => x % h != 0))
+    case Nil => Nil
+  }
+
+  findPrimes(List.range(2, n).filter(x=>x<200))
+}
+SieveofEratosthenes(500)
+
+//task2
+
+
+sealed trait Calculator
+case class val2(num1:Int, num2:Int) extends Calculator
+case class val1(num: Int) extends Calculator
+
+object Calculator{
+
+  def AddTwoInt(calc: Calculator):Int={
+    calc match {
+      case val2(x,y)=>x+y
+      case val1(x)=>x
+    }
+  }
+  def NegInt(calc: Calculator):Int={
+    calc match {
+      case val1(x)=> -x
+    }
+  }
+}
+
+Calculator.AddTwoInt(val2(1,2))
+
+
+//task 4
+
+def identifyTypeArg(x:Any):String={
+  x match {
+
+    case sa: String => s"you have entered a String :$sa"
+    case i: Int => s"You have entered an int : $i"
+    case f: Float => s"You entered an float : $f"
+    case a: Array[Double] => s"this is array of doubles : ${a.mkString(",")}"
+    case b: Boolean => s"you have entered a bool value : $b"
+    case _ => "Unknown"
+  }
+
+}
+identifyTypeArg(Array(1.0,2.0,3.0))
+
+//task3
+sealed abstract class Bool extends Product with Serializable
+object Bool {
+  final case object True extends Bool
+  final case object False extends Bool
+}
+def toStr(x:Bool)={
+  x match {
+    case True => "True"
+    case False =>"False"
+  }
+}
+
+sealed trait ownBoolFunc
+case class b1(fir:Bool)extends ownBoolFunc
+case class b2(fir:Bool,sec:Bool) extends  ownBoolFunc
+
+object BoolFunc{
+
+  def AND(boolFunc: ownBoolFunc): Bool={
+    boolFunc match {
+      case b1(x) => x
+      case b2(True,True)=>True
+      case b2(_,_)=>False
+    }
+  }
+  def OR(boolFunc: ownBoolFunc):Bool={
+    boolFunc match {
+      case b1(x)=>x
+      case b2(False,False)=>False
+      case b2(_,_)=>True
+    }
+  }
+  def NOT(oneBool: b1):Bool={
+    oneBool match {
+      case b1(True)=>False
+      case b1(False)=>True
+    }
+  }
+  def NOT(boolFunc : ownBoolFunc):b2={
+    boolFunc match {
+      case b2(True,False)=>b2(False,True)
+      case b2(True,True)=>b2(False,False)
+      case b2(False,False)=>b2(True,True)
+      case b2(False,True)=>b2(True,False)
+    }
+  }
+  def NOT(x:Bool):Bool={
+    x match {
+      case True=>False
+      case False=>True
+    }
+  }
+  def XOR(boolFunc: ownBoolFunc):Bool={
+    boolFunc match {
+      case b2(x,y)=>if (x==y) False else True
+      case b1(x)=>x
+    }
+  }
+  def NAND(boolFunc: ownBoolFunc):Bool={
+    NOT(AND(boolFunc))
+  }
+  def NOR(boolFunc: ownBoolFunc):Bool={
+    NOT(OR(boolFunc))
+  }
+  def NXOR(boolFunc: ownBoolFunc):Bool={
+    NOT(XOR(boolFunc))
+  }
+
+}

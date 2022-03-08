@@ -1,0 +1,46 @@
+// Task 1
+def lazyrepeat[A](k: Int)(lxs: LazyList[A]):LazyList[A]= {
+  if (k < 1) throw new Exception ("Set value higher than 0")
+  def lazyrepeatHelper(rpts: Int, rest: LazyList[A]): LazyList[A] =
+    (rpts, rest) match {
+      case (_, LazyList()) => LazyList()
+      case (0, _ #:: tl) => lazyrepeatHelper(k, tl)
+      case (_, hd #:: tl) => hd#::lazyrepeatHelper(rpts - 1, rest)
+    }
+  lazyrepeatHelper(k, lxs)
+}
+
+var a = lazyrepeat(5)(LazyList[Int](1,2,3))
+a.toList
+
+
+// Task 2
+val lfib = {
+  def help(x1: Int, x2: Int): LazyList[Int] = x2 #:: help(x2, x1 + x2)
+  0 #:: help(0, 1)
+}
+
+val fibVal = lfib.take(12)
+fibVal.toList
+
+// Task 3
+trait lBT[+A]
+case object LEmpty extends lBT[Nothing]
+case class LNode[+A](elem:A, left:()=>lBT[A],
+                     right:()=>lBT[A]) extends lBT[A]
+
+def lBreadth[A](ltree:lBT[A]):LazyList[A] = {
+  def help(queue:List[lBT[A]]):LazyList[A] = {
+    queue match {
+      case Nil => LazyList();
+      case LEmpty::tl => help(tl)
+      case LNode(elem, left, right)::tl => elem#::help(tl ::: List(left(), right()))
+    }
+  }
+  help(List(ltree))
+}
+
+def lTree(k: Int):lBT[Int] = LNode(k, ()=>lTree(2*k), () => lTree(2*k+1))
+
+val treeVal = lBreadth(lTree(5)).take(10)
+treeVal.toList

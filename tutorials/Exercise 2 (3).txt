@@ -1,0 +1,94 @@
+
+
+
+object Exercise2 {
+
+//task1
+  def sumList1(list: List[Int]):Int={
+
+    require(list.size>0, "List can't be empty")
+
+    list match{
+
+      case _ if(list.size==1&&list.head%2!=0) => list.head
+
+      case _ if(list.size==1&&list.head%2==0) =>0
+
+      case _ if ((list.head) % 2 == 0)=>  sumList1(list.tail)
+
+      case _ => list.head + sumList1(list.tail)
+
+    }
+  }
+  // task2
+ def connectStrings( listOfString: List[String], separator : String ): String = {
+   require(listOfString.size > 0, "List can't be Empty")
+
+   listOfString match{
+     case _ if(listOfString.size==1)=>listOfString.head
+     case _ if(listOfString.size>1)=>listOfString.head + separator+connectStrings(listOfString.tail,separator)
+   }
+
+ }
+ //task3
+  def count [Element](e:Element, list:List[Element]):Int ={
+
+    if (list.size==0) 0
+    else if (list.head == e) 1 + count(e, list.tail)
+    else count(e, list.tail)
+  }
+//task4
+  def fibsec (x:Int):BigInt = {
+    require(x>=0,"please provide positive number")
+    def Go (n:Int, a:Int, b:Int):Int =
+      n match {
+        case 0 => a
+        case 1 => b
+        case _ =>
+          Go(n-1, b, a+b)
+
+      }
+    Go(x, 0, 1)
+  }
+
+  def main(args:Array[String])
+  {
+
+    //task1
+    println("***********-------------task 1-----------***************")
+    val w = List(1,1,49,2)
+    val  q = List(6,55,31,0,12,22)
+    val qw = List(1)
+    println("Test 1 :- "+sumList1(w))
+    println("Test 2 :- "+sumList1(q))
+    println("Test 3 :- "+sumList1(qw))
+
+  //task2
+   // in here i omitted charcter printing after scala
+    println("**************-------------task 2-----------************")
+    val c =List("i","love","scala")
+    val cj = List("michal","szczepanik@pwr","edu","pl")
+    val cjj = List("253961@student","pwr","edu","pl")
+    val j = "."
+    val jc = "*"
+    println("Test 1 :- "+connectStrings(c,jc))
+    println("Test 2 :- "+connectStrings(cj,j))
+    println("Test 3 :- "+connectStrings(cjj,j))
+
+    //task 3
+    println("**************-------------task 3-----------**************")
+    val  qgg = List(6,6,31,6,12,22)
+     println("Test 1 :- "+count(6,qgg))
+      println("Test 2 :- "+count(1,q))
+    println("Test 3 :- "+count("love",c))
+    //task4
+    println("**************-------------task 4-----------**************")
+     println("Test 1 (5th number) :- "+fibsec(5))
+    println("Test 2 (13th number) :- "+fibsec(13))
+    println("Test 3 (23th number) :- "+fibsec(23))
+
+
+  }
+}
+
+

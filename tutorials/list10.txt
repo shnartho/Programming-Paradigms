@@ -1,0 +1,117 @@
+task 1
+
+abstract class Sequence[+T] {
+
+def append(x: Sequence[T]): Sequence[T]
+
+}
+
+
+
+object ExVariance_1 extends App {
+
+
+
+The append method doesn't not work because, if we have type Z extends T then that means Sequence[Z] also
+
+Extends Sequence[T], in that case if we have a method like append with any parameter of T that assumes that
+
+Both T and Z have the same functionality, but in reality they can differ in the things they do.
+
+}
+
+
+
+
+
+task 2
+
+import mergea.collection.mutable
+
+
+
+class InvariantExample[T] {
+
+
+
+  var values: List[T] = List()
+
+
+
+  def copyCollection(from : Iterable[T]): Unit = {
+
+    from.foreach(element => {
+
+      values = values.appended(element)
+
+    })
+
+  }
+
+
+
+  def printList(): Unit = {
+
+values.foreach(x => print("["[ + x + "]"))
+
+  }
+
+
+
+}
+
+
+
+object ExVariance_2 extends App {
+
+
+
+Mutable collection
+
+val myList = new mutable. Stack[Int]
+
+  myList.append(1,2,3,4,5)
+
+
+
+Our example class
+
+  var ie = new InvariantExample[Int]
+
+  ie.copyCollection(myList)
+
+
+
+Print proof we copied
+
+  ie.printList()
+
+
+
+}
+
+
+
+task 3
+
+covariant means if A is a subtype of B hence A[] will be the subtype of B[] moreover the invariant is lot different than covariant 
+
+as it is irespective of A being subtype of B independent of A[] will be the subtype of B[] so basically invariant are independent 
+
+of one another.
+
+
+
+For example:-
+
+
+
+Number[] n= newNumber[2];
+
+n[0] = newInteger(1);
+
+n[1] = newDouble(2.54);
+
+Integer[] i= {1,2,3,4};
+
+Number[] nw= i;// we can assign numbers to int.
